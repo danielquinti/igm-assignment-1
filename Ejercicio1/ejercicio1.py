@@ -114,7 +114,7 @@ def montecarlo_torus_spheres_analysis():
 
 def montecarlo_torus_convergence_analysis():
     toro_relative_errors = []
-    nsims_list = [1000, 10000, 100000, 1000000]
+    nsims_list = [1000, 10000, 100000]
     for nsims in nsims_list:
         toro_relative_errors_for_nsim = []
         for _ in range(50):
