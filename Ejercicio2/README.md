@@ -1,27 +1,89 @@
-Ejercicio de dibujado mediante curvas de Bezier.
+# Practica Curvas de Bezier
+
+Álvaro Santiso Freire - alvaro.santiso@udc.es
+Daniel Quintillán Quintillán - daniel.quintillan@udc.es
+
+## Archivos
 
 - Carpeta ```figuras```
+    Contiene archivos csv con las subfiguras (Curvas de Bezier cerradas) que componen la figura.
+    Cada archivo contiene las Curvas de Bezier (coordenadas de los puntos de control) de una subfigura y metadatos.
+    La estructura del archivo es la siguiente:
+        Cada curva se representa mediante dos filas. En la primera fila se indica el tipo de curva (l, q, c) y las coordenadas X de los puntos de control. En la segunda fila se indican las coordenadas Y de los puntos de control.
+        El punto final de una curva no se indica, se corresponde con el primero de la siguiente curva.
+        Las dos filas siguientes a la última curva se marcan con el tipo 'f' para indicar las coordenadas del punto final (o "close" si la curva es cerrada, correspondiendose el punto final con el primer punto de la primera curva).
+        En la última fila se indican metadatos de la subfigura (color y capa de dibujado).
 
-Curvas situadas en carpeta ```figuras```. Se dibujarán todos los archivos csv.
-Cada archivo indica las coordenadas de las curvas de una figura, además de metadatos.
-Cada dos filas corresponden a una curva (la primera fila para las coordenadas X y la segunda para las Y).
-El tipo de curva se indica en la primera columna y puede ser: l, q, c.
-El punto final de una curva no se indica, se corresponde con el primero de la siguiente.
-Al final del archivo se indica las coordenadas del puntos final o "close" si la curva es cerrada.
-En la última fila se indican metadatos de la figura (de momento solo el color).
+- Carpeta ```Ferrari```
+    Contiene la imagen modelo que se va a dibujar (ferrari.svg) y archivos de apoyo para generar los archivos csv junto con el parser.
 
 - parserSVG.py
+    Traduce un archivo svg que contenga una única curva cerrada a un archivo csv (con la sintaxis explicada en el apartado anterior).
 
-Traduce un archivo svg a un archivo csv (con la sintaxis explicada en el apartado anterior).
-Funciona para una única figura cerrada (si el archivo contiene varias, es necesario dividirlo en varios archivos previamente, teniendo precaución con las coordenadas relativas de los puntos).
+- ejerCuvasBezier.py
+    Código principal.
+    Modificar el valor de las variables al principio del archivo (MOSTRAR_PUNTOS_CONTROL, MOSTRAR_CONTORNO, MOSTRAR_PIEZA) según lo que se desee visualizar.
+    BezierCurve: clase que representa una curva de Bezier de grado n. Contiene:
+        - Puntos de control
+        - Grado de la curva
+        - Puntos de la curva calculados a partir de los puntos de control y el grado de la curva
+        - Métodos para calcular los puntos de la curva
+        - Transformaciones (traslación, rotación, escalado y reflexión).
+    Figura: Clase que representa una figura compuesta por varias curvas de Bezier. Contiene:
+        - Lista de curvas de Bezier
+        - Color de relleno de la figura
+        - Nombre de la figura
+        - Número de capa para el Algoritmo del Pintor
+        - Métodos para dibujar la figura y para aplicar transformaciones a todas las curvas de la figura (traslación, rotación, escalado y reflexión).  
+        
+## Requisitos
 
-- ejerCuvasBeizer.py
+- Python 3.10 o superior
+- pip
 
-Código principal.
-BezierCurve: clase abstracta para las curvas de Beizer. Las clases concretas implementarán el método point dependiendo del tipo de curva.
-Figure: clase que representa a una figura cerrada mediante una lista de curvas de Bezier.
+## Configuración del entorno
 
-- Procedimiento
-    1. Obtener un archivo svg por cada figura cerrada (mediante un editor como inkscape) y almacenarlos en la carpeta ```figuras```.
-    2. Para cada archivo svg, aplicar parserSVG.py, obteniendo los correspondientes csv.
-    3. Ejecutar ejerCurvasBeizer.py para mostrar las figuras. (falta mostrar el resultado conjunto de todas)
+Situarse en el directorio raíz del proyecto:
+
+```bash
+cd Ejercicio2
+```
+
+Crear un entorno virtual e instalar las dependencias:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate   # En macOS/Linux
+# venv\Scripts\activate    # En Windows
+pip install -r requirements.txt
+```
+
+### Dependencias principales
+
+| Paquete | Uso |
+|---------|-----|
+| `matplotlib` | Visualización y dibujo de las curvas |
+| `numpy` | Cálculo numérico (puntos de Bezier, transformaciones) |
+| `svgpathtools` | Parseo de archivos SVG (usado por `parserSVG.py`) |
+
+## Ejecución
+
+Con el entorno virtual activado, ejecutar el archivo principal:
+
+```bash
+python ejerCurvasBezier.py
+```
+
+Se pueden modificar las variables al inicio de `ejerCurvasBezier.py` para controlar la visualización:
+
+```python
+MOSTRAR_PUNTOS_CONTROL = True   # Muestra los puntos de control de cada curva
+MOSTRAR_CONTORNO = True         # Muestra el contorno interpolado de cada figura
+MOSTRAR_PIEZA = True            # Muestra cada pieza rellena individualmente
+```
+
+Para generar un archivo CSV a partir de un SVG con una curva cerrada:
+
+```bash
+python parserSVG.py
+```

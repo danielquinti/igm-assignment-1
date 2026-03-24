@@ -1,10 +1,13 @@
 from svgpathtools import svg2paths
 from svgpathtools.path import Line, CubicBezier, QuadraticBezier
 
-FILE_NAME = "nick.svg"
+FILE_NAME = "pataArriba.svg"
 PATH = f"figuras/{FILE_NAME}"
 
 def print_svg_absolute(svg_file):
+    """
+    Lee un archivo SVG, convierte sus rutas en coordenadas absolutas y las guarda en un archivo CSV.
+    """
     paths, attributes = svg2paths(svg_file)
     csv = ""
     final = None
